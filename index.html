@@ -1,0 +1,1783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fertig's Art Exhibit</title>
+    <style>
+        :root {
+            --color-white: rgba(255, 255, 255, 1);
+            --color-black: rgba(0, 0, 0, 1);
+            --color-cream-50: rgba(252, 252, 249, 1);
+            --color-cream-100: rgba(255, 255, 253, 1);
+            --color-gray-200: rgba(245, 245, 245, 1);
+            --color-gray-300: rgba(167, 169, 169, 1);
+            --color-gray-400: rgba(119, 124, 124, 1);
+            --color-slate-500: rgba(98, 108, 113, 1);
+            --color-brown-600: rgba(94, 82, 64, 1);
+            --color-charcoal-700: rgba(31, 33, 33, 1);
+            --color-charcoal-800: rgba(38, 40, 40, 1);
+            --color-slate-900: rgba(19, 52, 59, 1);
+            --color-teal-300: rgba(50, 184, 198, 1);
+            --color-teal-400: rgba(45, 166, 178, 1);
+            --color-teal-500: rgba(33, 128, 141, 1);
+            --color-teal-600: rgba(29, 116, 128, 1);
+            --color-teal-700: rgba(26, 104, 115, 1);
+            --color-red-400: rgba(255, 84, 89, 1);
+            --color-red-500: rgba(192, 21, 47, 1);
+            --color-orange-400: rgba(230, 129, 97, 1);
+            --color-orange-500: rgba(168, 75, 47, 1);
+            --color-brown-600-rgb: 94, 82, 64;
+            --color-teal-500-rgb: 33, 128, 141;
+            --color-slate-900-rgb: 19, 52, 59;
+            --color-slate-500-rgb: 98, 108, 113;
+            --color-background: var(--color-charcoal-700);
+            --color-surface: var(--color-charcoal-800);
+            --color-text: var(--color-gray-200);
+            --color-text-secondary: var(--color-gray-300);
+            --color-primary: var(--color-teal-500);
+            --color-primary-hover: var(--color-teal-600);
+            --color-primary-active: var(--color-teal-700);
+            --color-secondary: rgba(var(--color-gray-400), 0.15);
+            --color-secondary-hover: rgba(var(--color-gray-400), 0.25);
+            --color-border: rgba(var(--color-gray-400), 0.3);
+            --color-error: var(--color-red-400);
+            --color-success: var(--color-teal-300);
+            --font-family-base: "FKGroteskNeue", "Geist", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --font-size-sm: 12px;
+            --font-size-base: 14px;
+            --font-size-lg: 16px;
+            --font-size-xl: 18px;
+            --font-size-2xl: 20px;
+            --font-size-3xl: 24px;
+            --font-size-4xl: 30px;
+            --font-weight-normal: 400;
+            --font-weight-medium: 500;
+            --font-weight-semibold: 550;
+            --font-weight-bold: 600;
+            --space-4: 4px;
+            --space-8: 8px;
+            --space-12: 12px;
+            --space-16: 16px;
+            --space-20: 20px;
+            --space-24: 24px;
+            --space-32: 32px;
+            --radius-base: 8px;
+            --radius-lg: 12px;
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+        }
+
+        @font-face {
+            font-family: 'FKGroteskNeue';
+            src: url('https://r2cdn.perplexity.ai/fonts/FKGroteskNeue.woff2') format('woff2');
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family-base);
+            background-color: var(--color-background);
+            color: var(--color-text);
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+        /* Security: Disable right-click and selection on images */
+        .protected-image,
+        .artwork-display,
+        .gallery-item {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-user-drag: none;
+            -khtml-user-drag: none;
+            -moz-user-drag: none;
+            -o-user-drag: none;
+            pointer-events: auto;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--color-charcoal-800) 0%, var(--color-slate-900) 100%);
+            padding: var(--space-24) var(--space-32);
+            border-bottom: 2px solid var(--color-primary);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-md);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: var(--space-16);
+        }
+
+        .header h1 {
+            font-size: var(--font-size-4xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-primary);
+            letter-spacing: -0.02em;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: var(--space-12);
+            align-items: center;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: var(--space-12) var(--space-20);
+            border: none;
+            border-radius: var(--radius-base);
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-medium);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: var(--font-family-base);
+        }
+
+        .btn-primary {
+            background-color: var(--color-primary);
+            color: var(--color-charcoal-800);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--color-primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background-color: var(--color-secondary);
+            color: var(--color-text);
+            border: 1px solid var(--color-border);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--color-secondary-hover);
+        }
+
+        .btn-danger {
+            background-color: var(--color-error);
+            color: var(--color-charcoal-800);
+        }
+
+        .btn-danger:hover {
+            opacity: 0.9;
+        }
+
+        .btn-small {
+            padding: var(--space-8) var(--space-12);
+            font-size: var(--font-size-sm);
+        }
+
+        /* Main container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: var(--space-32);
+        }
+
+        /* Search and filter */
+        .controls {
+            display: flex;
+            gap: var(--space-16);
+            margin-bottom: var(--space-32);
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+            padding: var(--space-12);
+            background-color: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-base);
+            color: var(--color-text);
+            font-size: var(--font-size-base);
+            font-family: var(--font-family-base);
+        }
+
+        .filter-select {
+            padding: var(--space-12);
+            background-color: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-base);
+            color: var(--color-text);
+            font-size: var(--font-size-base);
+            font-family: var(--font-family-base);
+        }
+
+        /* Gallery grid */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: var(--space-24);
+            margin-bottom: var(--space-32);
+        }
+
+        .gallery-item {
+            position: relative;
+            background-color: var(--color-surface);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: 1px solid var(--color-border);
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .gallery-item-image {
+            width: 100%;
+            height: 300px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gallery-item-image canvas {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Transparent overlay for protection */
+        .image-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            z-index: 10;
+        }
+
+        .gallery-item-info {
+            padding: var(--space-16);
+        }
+
+        .gallery-item-title {
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text);
+            margin-bottom: var(--space-8);
+        }
+
+        .gallery-item-category {
+            display: inline-block;
+            padding: var(--space-4) var(--space-12);
+            background-color: var(--color-secondary);
+            border-radius: var(--radius-base);
+            font-size: var(--font-size-sm);
+            color: var(--color-primary);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            overflow-y: auto;
+            padding: var(--space-32);
+            cursor: pointer;
+        }
+
+        .modal.active {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .modal-content {
+            background-color: var(--color-surface);
+            border-radius: var(--radius-lg);
+            max-width: 900px;
+            width: 100%;
+            margin: auto;
+            position: relative;
+            box-shadow: var(--shadow-lg);
+            cursor: default;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: var(--space-16);
+            right: var(--space-16);
+            background: var(--color-error);
+            color: white;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: var(--font-size-xl);
+            cursor: pointer;
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        .modal-close:hover {
+            background: var(--color-red-500);
+            transform: scale(1.1);
+        }
+        
+        .modal-close:active {
+            transform: scale(0.95);
+        }
+
+        .modal-image-container {
+            position: relative;
+            width: 100%;
+            max-height: 500px;
+            background-color: var(--color-charcoal-700);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+        }
+
+        .modal-image-container canvas {
+            max-width: 100%;
+            max-height: 500px;
+            display: block;
+        }
+
+        .modal-details {
+            padding: var(--space-32);
+        }
+
+        .modal-title {
+            font-size: var(--font-size-3xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text);
+            margin-bottom: var(--space-16);
+        }
+
+        .modal-meta {
+            display: flex;
+            gap: var(--space-16);
+            margin-bottom: var(--space-16);
+            flex-wrap: wrap;
+        }
+
+        .modal-description {
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+            margin-bottom: var(--space-24);
+        }
+
+        /* Comments section */
+        .comments-section {
+            border-top: 1px solid var(--color-border);
+            padding-top: var(--space-24);
+        }
+
+        .comments-title {
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-semibold);
+            margin-bottom: var(--space-16);
+        }
+
+        .comment-form {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-12);
+            margin-bottom: var(--space-24);
+        }
+
+        .comment-input {
+            padding: var(--space-12);
+            background-color: var(--color-charcoal-700);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-base);
+            color: var(--color-text);
+            font-size: var(--font-size-base);
+            font-family: var(--font-family-base);
+        }
+
+        .comment-input:focus {
+            outline: 2px solid var(--color-primary);
+            border-color: var(--color-primary);
+        }
+
+        textarea.comment-input {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .comment-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-16);
+        }
+
+        .comment {
+            background-color: var(--color-charcoal-700);
+            padding: var(--space-16);
+            border-radius: var(--radius-base);
+            border: 1px solid var(--color-border);
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-8);
+        }
+
+        .comment-author {
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-primary);
+        }
+
+        .comment-date {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+        }
+
+        .comment-text {
+            color: var(--color-text);
+            line-height: 1.6;
+        }
+
+        /* Dashboard */
+        .dashboard {
+            display: none;
+        }
+
+        .dashboard.active {
+            display: block;
+        }
+
+        .dashboard-tabs {
+            display: flex;
+            gap: var(--space-8);
+            margin-bottom: var(--space-24);
+            border-bottom: 2px solid var(--color-border);
+            flex: 1;
+        }
+
+        .dashboard-tab {
+            padding: var(--space-12) var(--space-20);
+            background: transparent;
+            border: none;
+            color: var(--color-text-secondary);
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-medium);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            font-family: var(--font-family-base);
+        }
+
+        .dashboard-tab.active {
+            color: var(--color-primary);
+            border-bottom-color: var(--color-primary);
+        }
+
+        .dashboard-panel {
+            display: none;
+        }
+
+        .dashboard-panel.active {
+            display: block;
+        }
+
+        .upload-form {
+            background-color: var(--color-surface);
+            padding: var(--space-24);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-border);
+        }
+
+        .form-group {
+            margin-bottom: var(--space-16);
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: var(--space-8);
+            font-weight: var(--font-weight-medium);
+            color: var(--color-text);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: var(--space-12);
+            background-color: var(--color-charcoal-700);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-base);
+            color: var(--color-text);
+            font-size: var(--font-size-base);
+            font-family: var(--font-family-base);
+        }
+
+        .form-input:focus {
+            outline: 2px solid var(--color-primary);
+            border-color: var(--color-primary);
+        }
+
+        .preview-container {
+            margin-top: var(--space-16);
+            text-align: center;
+        }
+
+        .preview-container canvas {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-base);
+        }
+
+        .artwork-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-16);
+        }
+
+        .artwork-item {
+            background-color: var(--color-surface);
+            padding: var(--space-16);
+            border-radius: var(--radius-base);
+            border: 1px solid var(--color-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: var(--space-16);
+        }
+
+        .artwork-item-info {
+            flex: 1;
+        }
+
+        .artwork-item-actions {
+            display: flex;
+            gap: var(--space-8);
+        }
+
+        .log-entry {
+            background-color: var(--color-surface);
+            padding: var(--space-12);
+            border-radius: var(--radius-base);
+            border: 1px solid var(--color-border);
+            margin-bottom: var(--space-8);
+            font-size: var(--font-size-sm);
+            font-family: monospace;
+        }
+
+        .alert {
+            padding: var(--space-12) var(--space-16);
+            border-radius: var(--radius-base);
+            margin-bottom: var(--space-16);
+        }
+
+        .alert-success {
+            background-color: rgba(var(--color-teal-500-rgb), 0.15);
+            color: var(--color-success);
+            border: 1px solid var(--color-success);
+        }
+
+        .alert-error {
+            background-color: rgba(255, 84, 89, 0.15);
+            color: var(--color-error);
+            border: 1px solid var(--color-error);
+        }
+
+        /* About section */
+        .about-section {
+            background-color: var(--color-surface);
+            padding: var(--space-32);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-border);
+            margin-bottom: var(--space-32);
+        }
+
+        .about-section h2 {
+            font-size: var(--font-size-3xl);
+            margin-bottom: var(--space-16);
+            color: var(--color-primary);
+        }
+
+        .about-section p {
+            color: var(--color-text-secondary);
+            line-height: 1.8;
+            margin-bottom: var(--space-16);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: var(--font-size-2xl);
+            }
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+            .container {
+                padding: var(--space-16);
+            }
+            .modal {
+                padding: var(--space-16);
+            }
+        }
+
+        /* Print protection */
+        @media print {
+            .gallery-item-image,
+            .modal-image-container,
+            .protected-image,
+            canvas {
+                display: none !important;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <h1>Fertig's Art Exhibit</h1>
+            <div class="header-actions">
+                <button id="aboutBtn" class="btn btn-secondary">About</button>
+                <button id="loginBtn" class="btn btn-primary">Owner Login</button>
+                <button id="dashboardBtn" class="btn btn-primary hidden">Dashboard</button>
+                <button id="logoutBtn" class="btn btn-secondary hidden">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main container -->
+    <div class="container">
+        <!-- Public gallery view -->
+        <div id="galleryView">
+            <!-- About section -->
+            <div id="aboutSection" class="about-section hidden">
+                <!-- Content dynamically rendered here -->
+            </div>
+
+            <!-- Search and filter -->
+            <div class="controls">
+                <input type="text" id="searchBox" class="search-box" placeholder="Search artwork by title or description...">
+                <select id="categoryFilter" class="filter-select">
+                    <!-- Categories populated dynamically -->
+                </select>
+            </div>
+
+            <!-- Gallery grid -->
+            <div id="galleryGrid" class="gallery-grid"></div>
+        </div>
+
+        <!-- Owner dashboard -->
+        <div id="dashboardView" class="dashboard">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-24);">
+                <div class="dashboard-tabs" style="margin-bottom: 0; border-bottom: none;">
+                    <button class="dashboard-tab active" data-tab="upload">Upload Artwork</button>
+                    <button class="dashboard-tab" data-tab="manage">Manage Artworks</button>
+                    <button class="dashboard-tab" data-tab="comments">Moderate Comments</button>
+                    <button class="dashboard-tab" data-tab="security">Security Logs</button>
+                </div>
+                <button id="exitDashboardBtn" class="btn btn-secondary">Back to Gallery</button>
+            </div>
+
+            <!-- Upload panel -->
+            <div class="dashboard-panel active" data-panel="upload">
+                <div class="upload-form">
+                    <h2>Upload New Artwork</h2>
+                    <div id="uploadAlert"></div>
+                    <form id="uploadForm">
+                        <div class="form-group">
+                            <label class="form-label">Artwork Image</label>
+                            <input type="file" id="imageUpload" class="form-input" accept="image/jpeg,image/png,image/gif" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Title</label>
+                            <input type="text" id="artworkTitle" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Description</label>
+                            <textarea id="artworkDescription" class="form-input" rows="4" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Category</label>
+                            <input type="text" id="artworkCategory" class="form-input" required>
+                        </div>
+                        <div class="preview-container" id="uploadPreview"></div>
+                        <button type="submit" class="btn btn-primary">Upload Artwork</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Manage artworks panel -->
+            <div class="dashboard-panel" data-panel="manage">
+                <h2>Manage Artworks</h2>
+                <div id="artworkList" class="artwork-list"></div>
+            </div>
+
+            <!-- Comments moderation panel -->
+            <div class="dashboard-panel" data-panel="comments">
+                <h2>Moderate Comments</h2>
+                <div id="commentsList" class="artwork-list"></div>
+            </div>
+
+            <!-- Security logs panel -->
+            <div class="dashboard-panel" data-panel="security">
+                <h2>Security Logs</h2>
+                <div id="securityLogs"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content" style="max-width: 400px;">
+            <button class="modal-close" onclick="closeLoginModal()">&times;</button>
+            <div class="modal-details">
+                <h2>Owner Login</h2>
+                <div id="loginAlert"></div>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" id="loginPassword" class="form-input" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
+                </form>
+                <p style="margin-top: var(--space-16); font-size: var(--font-size-sm); color: var(--color-text-secondary);">This gallery is protected. Only the owner can upload and manage artwork.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Artwork detail modal -->
+    <div id="artworkModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeArtworkModal()">&times;</button>
+            <div class="modal-image-container">
+                <canvas id="modalCanvas" class="protected-image"></canvas>
+                <div class="image-overlay"></div>
+            </div>
+            <div class="modal-details">
+                <h2 class="modal-title" id="modalTitle"></h2>
+                <div class="modal-meta">
+                    <span class="gallery-item-category" id="modalCategory"></span>
+                    <span style="color: var(--color-text-secondary); font-size: var(--font-size-sm);" id="modalDate"></span>
+                    <span style="color: var(--color-text-secondary); font-size: var(--font-size-sm);" id="modalViews" class="hidden"></span>
+                </div>
+                <p class="modal-description" id="modalDescription"></p>
+                
+                <div class="comments-section">
+                    <h3 class="comments-title">Comments</h3>
+                    <form class="comment-form" id="commentForm">
+                        <input type="text" id="commentName" class="comment-input" placeholder="Your name" required>
+                        <textarea id="commentText" class="comment-input" placeholder="Leave a comment (minimum 10 characters)" required></textarea>
+                        <button type="submit" class="btn btn-primary">Post Comment</button>
+                    </form>
+                    <div id="commentList" class="comment-list"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Owner password as specified
+        // Store in memory (resets on page reload)
+        const OWNER_PASSWORD_HASH = 'OPENTHE-OPENTHEDOORPLEASE-VER0NICA-OPENTHEDOOR-VER0NICA-CANWENOTFIGHTANYMOREPLEASE-CANWENOTFIGHTANYMORE';
+        
+        // Application state
+        let isOwnerLoggedIn = false;
+        let currentArtworkId = null;
+        let nextArtworkId = 4;
+        let nextCommentId = 1;
+        let currentCategoryFilter = 'all';
+        
+        // About content storage
+        window.aboutContent = {
+            title: "Emily Fertig",
+            bio: "Welcome to my art gallery. I'm Emily Fertig, a digital artist passionate about creating vibrant and meaningful artwork. Each piece reflects my unique perspective and creative journey.",
+            statement: "My art explores the intersection of nature, emotion, and digital expression. I believe in the power of visual storytelling and aim to create work that resonates with viewers on a deeper level.",
+            email: "emily@example.com",
+            socialLinks: "Instagram: @emilyfertig | Twitter: @emilyfertig"
+        };
+        
+        // Dynamic categories list (empty at start)
+        window.categories = [];
+        
+        // Data storage (in-memory only, resets on page reload)
+        // START WITH EMPTY GALLERY - ready for Emily to upload real artwork
+        let artworks = [];
+        
+        let comments = [];
+        let securityLogs = [];
+        
+        // Track initial ID for first upload
+        let isFirstArtwork = true;
+        
+        // Initialize empty gallery - no sample artwork
+        function initializeEmptyGallery() {
+            // Gallery starts completely empty
+            artworks = [];
+            comments = [];
+            window.categories = [];
+            
+            // No need to extract categories - will populate as Emily uploads
+            addSecurityLog('system', 'Gallery initialized - ready for first upload');
+        }
+        
+        // Extract all unique categories from existing artworks
+        function extractCategoriesFromArtworks() {
+            window.categories = [];
+            artworks.forEach(artwork => {
+                if (!window.categories.includes(artwork.category)) {
+                    window.categories.push(artwork.category);
+                }
+            });
+            // Sort categories alphabetically
+            window.categories.sort();
+        }
+        
+        // Add new category if it doesn't exist
+        window.addNewCategory = function(category) {
+            const trimmedCategory = category.trim();
+            if (trimmedCategory && !window.categories.includes(trimmedCategory)) {
+                window.categories.push(trimmedCategory);
+                window.categories.sort();
+                renderCategoryFilter();
+                addSecurityLog('category_added', `New category added: "${trimmedCategory}"`);
+            }
+        }
+        
+        // Render category filter dropdown
+        function renderCategoryFilter() {
+            const filterSelect = document.getElementById('categoryFilter');
+            
+            let optionsHTML = '<option value="all">All Categories</option>';
+            
+            window.categories.forEach(category => {
+                optionsHTML += `<option value="${escapeHtml(category)}">${escapeHtml(category)}</option>`;
+            });
+            
+            // Store current selection
+            const currentValue = filterSelect.value || 'all';
+            
+            // Update options
+            filterSelect.innerHTML = optionsHTML;
+            
+            // Restore selection if it still exists
+            if (currentValue !== 'all' && window.categories.includes(currentValue)) {
+                filterSelect.value = currentValue;
+            } else {
+                filterSelect.value = 'all';
+            }
+        }
+        
+        // Generate sample image with watermark
+        function generateSampleImage(color, title) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 800;
+            canvas.height = 600;
+            const ctx = canvas.getContext('2d');
+            
+            // Create gradient background
+            const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+            gradient.addColorStop(0, color);
+            gradient.addColorStop(1, adjustColor(color, -30));
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Add some abstract shapes
+            ctx.fillStyle = adjustColor(color, 20);
+            ctx.globalAlpha = 0.3;
+            ctx.beginPath();
+            ctx.arc(canvas.width * 0.7, canvas.height * 0.3, 150, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.beginPath();
+            ctx.arc(canvas.width * 0.3, canvas.height * 0.7, 120, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.globalAlpha = 1;
+            
+            // Add watermark
+            addWatermark(ctx, canvas.width, canvas.height);
+            
+            return canvas.toDataURL('image/jpeg', 0.6); // Low quality for preview
+        }
+        
+        // Adjust color brightness
+        function adjustColor(color, amount) {
+            const num = parseInt(color.replace('#', ''), 16);
+            const r = Math.max(0, Math.min(255, (num >> 16) + amount));
+            const g = Math.max(0, Math.min(255, ((num >> 8) & 0x00FF) + amount));
+            const b = Math.max(0, Math.min(255, (num & 0x0000FF) + amount));
+            return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, '0')}`;
+        }
+        
+        // Add watermark to canvas
+        function addWatermark(ctx, width, height) {
+            const watermarkText = 'Emily Fertig';
+            
+            // Save context
+            ctx.save();
+            
+            // Semi-transparent watermark
+            ctx.globalAlpha = 0.3;
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 48px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            
+            // Rotate and draw watermark multiple times
+            ctx.translate(width / 2, height / 2);
+            ctx.rotate(-45 * Math.PI / 180);
+            ctx.fillText(watermarkText, 0, 0);
+            
+            // Additional watermarks
+            ctx.fillText(watermarkText, -200, -150);
+            ctx.fillText(watermarkText, 200, 150);
+            
+            // Restore context
+            ctx.restore();
+            
+            // Border watermark
+            ctx.globalAlpha = 0.5;
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 24px Arial';
+            ctx.textAlign = 'right';
+            ctx.textBaseline = 'bottom';
+            ctx.fillText(watermarkText, width - 20, height - 20);
+        }
+        
+        // Render gallery
+        function renderGallery() {
+            const grid = document.getElementById('galleryGrid');
+            const searchTerm = document.getElementById('searchBox').value.toLowerCase();
+            const category = document.getElementById('categoryFilter').value || 'all';
+            
+            // Show welcome message if gallery is empty
+            if (artworks.length === 0) {
+                grid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: var(--space-32); background-color: var(--color-surface); border-radius: var(--radius-lg); border: 2px dashed var(--color-border);">
+                        <h2 style="color: var(--color-primary); font-size: var(--font-size-3xl); margin-bottom: var(--space-16);">Welcome to Fertig's Art Exhibit!</h2>
+                        <p style="color: var(--color-text-secondary); font-size: var(--font-size-lg); line-height: 1.8;">
+                            No artworks have been uploaded yet.<br>
+                            Please check back soon for new pieces!
+                        </p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let filtered = artworks.filter(artwork => {
+                const matchesSearch = artwork.title.toLowerCase().includes(searchTerm) || 
+                                    artwork.description.toLowerCase().includes(searchTerm);
+                const matchesCategory = category === 'all' || artwork.category === category;
+                return matchesSearch && matchesCategory;
+            });
+            
+            // Handle no results from filtering
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: var(--space-32); color: var(--color-text-secondary);">
+                        <p style="font-size: var(--font-size-lg);">No artworks match your search criteria.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            grid.innerHTML = filtered.map(artwork => `
+                <div class="gallery-item" onclick="openArtwork(${artwork.id})" data-artwork-id="${artwork.id}">
+                    <div class="gallery-item-image">
+                        <canvas id="thumb-${artwork.id}"></canvas>
+                        <div class="image-overlay"></div>
+                    </div>
+                    <div class="gallery-item-info">
+                        <h3 class="gallery-item-title">${escapeHtml(artwork.title)}</h3>
+                        <span class="gallery-item-category">${escapeHtml(artwork.category)}</span>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Draw thumbnails
+            filtered.forEach(artwork => {
+                drawThumbnail(`thumb-${artwork.id}`, artwork.imageData);
+            });
+        }
+        
+        // Draw thumbnail on canvas
+        function drawThumbnail(canvasId, imageData) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            const img = new Image();
+            img.onload = function() {
+                canvas.width = canvas.offsetWidth;
+                canvas.height = 300;
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            };
+            img.src = imageData;
+        }
+        
+        // Open artwork detail modal
+        window.openArtwork = function(artworkId) {
+            const artwork = artworks.find(a => a.id === artworkId);
+            if (!artwork) return;
+            
+            // Increment view count
+            artwork.viewCount++;
+            currentArtworkId = artworkId;
+            
+            // Update modal content
+            document.getElementById('modalTitle').textContent = artwork.title;
+            document.getElementById('modalCategory').textContent = artwork.category;
+            document.getElementById('modalDescription').textContent = artwork.description;
+            document.getElementById('modalDate').textContent = new Date(artwork.uploadDate).toLocaleDateString();
+            
+            if (isOwnerLoggedIn) {
+                document.getElementById('modalViews').textContent = `${artwork.viewCount} views`;
+                document.getElementById('modalViews').classList.remove('hidden');
+            } else {
+                document.getElementById('modalViews').classList.add('hidden');
+            }
+            
+            // Draw artwork on canvas
+            const canvas = document.getElementById('modalCanvas');
+            const ctx = canvas.getContext('2d');
+            const img = new Image();
+            img.onload = function() {
+                canvas.width = Math.min(img.width, 900);
+                canvas.height = (canvas.width / img.width) * img.height;
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            };
+            img.src = artwork.imageData;
+            
+            // Load comments
+            renderComments(artworkId);
+            
+            // Show modal
+            document.getElementById('artworkModal').classList.add('active');
+            
+            // Log view
+            addSecurityLog('artwork_view', `Artwork "${artwork.title}" viewed (ID: ${artworkId})`);
+        }
+        
+        // Close artwork modal
+        window.closeArtworkModal = function() {
+            document.getElementById('artworkModal').classList.remove('active');
+            currentArtworkId = null;
+            document.getElementById('commentForm').reset();
+        }
+        
+        // Close modal when clicking outside the modal content
+        document.getElementById('artworkModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeArtworkModal();
+            }
+        });
+        
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && document.getElementById('artworkModal').classList.contains('active')) {
+                closeArtworkModal();
+            }
+        });
+        
+        // Render comments for an artwork
+        function renderComments(artworkId) {
+            const artworkComments = comments.filter(c => c.artworkId === artworkId);
+            const container = document.getElementById('commentList');
+            
+            if (artworkComments.length === 0) {
+                container.innerHTML = '<p style="color: var(--color-text-secondary);">No comments yet. Be the first to comment!</p>';
+                return;
+            }
+            
+            container.innerHTML = artworkComments.map(comment => `
+                <div class="comment">
+                    <div class="comment-header">
+                        <span class="comment-author">${escapeHtml(comment.commenterName)}</span>
+                        <div>
+                            <span class="comment-date">${new Date(comment.timestamp).toLocaleString()}</span>
+                            ${isOwnerLoggedIn ? `<button class="btn btn-danger btn-small" style="margin-left: var(--space-8);" onclick="deleteComment(${comment.id})">Delete</button>` : ''}
+                        </div>
+                    </div>
+                    <p class="comment-text">${escapeHtml(comment.text)}</p>
+                </div>
+            `).join('');
+        }
+        
+        // Handle comment submission
+        document.getElementById('commentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('commentName').value.trim();
+            const text = document.getElementById('commentText').value.trim();
+            
+            // Spam protection
+            if (text.length < 10) {
+                showFeedback('Comment must be at least 10 characters long.', 'error');
+                return;
+            }
+            
+            // Check for excessive links
+            const linkCount = (text.match(/http/gi) || []).length;
+            if (linkCount > 2) {
+                showFeedback('Comments with excessive links are not allowed.', 'error');
+                addSecurityLog('spam_attempt', `Blocked comment with ${linkCount} links from ${name}`);
+                return;
+            }
+            
+            // Add comment
+            const comment = {
+                id: nextCommentId++,
+                artworkId: currentArtworkId,
+                commenterName: name,
+                text: text,
+                timestamp: new Date().toISOString()
+            };
+            
+            comments.push(comment);
+            
+            // Clear form
+            document.getElementById('commentName').value = '';
+            document.getElementById('commentText').value = '';
+            
+            // Re-render comments
+            renderComments(currentArtworkId);
+            
+            // Log
+            addSecurityLog('comment_added', `Comment added by ${name} on artwork ID ${currentArtworkId}`);
+        });
+        
+        // Delete comment
+        window.deleteComment = function(commentId) {
+            if (!isOwnerLoggedIn) return;
+            
+            const index = comments.findIndex(c => c.id === commentId);
+            if (index > -1) {
+                const comment = comments[index];
+                comments.splice(index, 1);
+                renderComments(currentArtworkId);
+                renderAllComments();
+                addSecurityLog('comment_deleted', `Comment ${commentId} deleted by owner`);
+            }
+        }
+        
+        // Show login modal
+        document.getElementById('loginBtn').addEventListener('click', function() {
+            document.getElementById('loginModal').classList.add('active');
+        });
+        
+        // Close login modal
+        window.closeLoginModal = function() {
+            document.getElementById('loginModal').classList.remove('active');
+        }
+        
+        // Handle login
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const password = document.getElementById('loginPassword').value;
+            const alertDiv = document.getElementById('loginAlert');
+            
+            if (password === OWNER_PASSWORD_HASH) {
+                isOwnerLoggedIn = true;
+                closeLoginModal();
+                updateUIForOwner();
+                addSecurityLog('login_success', 'Owner logged in successfully');
+                document.getElementById('loginPassword').value = '';
+                alertDiv.innerHTML = '';
+            } else {
+                alertDiv.innerHTML = '<div class="alert alert-error">Invalid password</div>';
+                addSecurityLog('login_failed', `Failed login attempt with password: ${password.substring(0, 3)}***`);
+            }
+        });
+        
+        // Update UI when owner logs in
+        function updateUIForOwner() {
+            document.getElementById('loginBtn').classList.add('hidden');
+            document.getElementById('dashboardBtn').classList.remove('hidden');
+            document.getElementById('logoutBtn').classList.remove('hidden');
+        }
+        
+        // Show dashboard
+        document.getElementById('dashboardBtn').addEventListener('click', function() {
+            document.getElementById('galleryView').style.display = 'none';
+            document.getElementById('dashboardView').classList.add('active');
+            renderArtworkList();
+            renderAllComments();
+            renderSecurityLogs();
+        });
+        
+        // Exit dashboard - return to gallery
+        document.getElementById('exitDashboardBtn').addEventListener('click', function() {
+            document.getElementById('galleryView').style.display = 'block';
+            document.getElementById('dashboardView').classList.remove('active');
+            renderGallery();
+        });
+        
+        // Logout - automatically returns to gallery
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            isOwnerLoggedIn = false;
+            
+            // Hide dashboard
+            document.getElementById('dashboardView').classList.remove('active');
+            
+            // Show gallery
+            document.getElementById('galleryView').style.display = 'block';
+            
+            // Update header buttons
+            document.getElementById('loginBtn').classList.remove('hidden');
+            document.getElementById('dashboardBtn').classList.add('hidden');
+            document.getElementById('logoutBtn').classList.add('hidden');
+            
+            // Re-render gallery to make sure it's fresh
+            renderGallery();
+            
+            addSecurityLog('logout', 'Owner logged out and returned to gallery');
+        });
+        
+        // Dashboard tabs
+        document.querySelectorAll('.dashboard-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                const targetPanel = this.dataset.tab;
+                
+                // Update active tab
+                document.querySelectorAll('.dashboard-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Update active panel
+                document.querySelectorAll('.dashboard-panel').forEach(p => p.classList.remove('active'));
+                document.querySelector(`[data-panel="${targetPanel}"]`).classList.add('active');
+            });
+        });
+        
+        // Handle image upload preview
+        document.getElementById('imageUpload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    
+                    // Resize and reduce quality
+                    const maxWidth = 800;
+                    const scale = maxWidth / img.width;
+                    canvas.width = maxWidth;
+                    canvas.height = img.height * scale;
+                    
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    
+                    // Add watermark
+                    addWatermark(ctx, canvas.width, canvas.height);
+                    
+                    // Show preview
+                    const preview = document.getElementById('uploadPreview');
+                    preview.innerHTML = '<h3>Preview with Watermark:</h3>';
+                    preview.appendChild(canvas);
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+        
+        // Handle artwork upload
+        document.getElementById('uploadForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const fileInput = document.getElementById('imageUpload');
+            const title = document.getElementById('artworkTitle').value.trim();
+            const description = document.getElementById('artworkDescription').value.trim();
+            const category = document.getElementById('artworkCategory').value.trim();
+            const alertDiv = document.getElementById('uploadAlert');
+            
+            if (!fileInput.files[0]) {
+                alertDiv.innerHTML = '<div class="alert alert-error">Please select an image</div>';
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    
+                    // Resize and reduce quality for security
+                    const maxWidth = 800;
+                    const scale = maxWidth / img.width;
+                    canvas.width = maxWidth;
+                    canvas.height = img.height * scale;
+                    
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    
+                    // Add watermark
+                    addWatermark(ctx, canvas.width, canvas.height);
+                    
+                    // Add new category if needed
+                    window.addNewCategory(category);
+                    
+                    // Create artwork object
+                    const artwork = {
+                        id: nextArtworkId++,
+                        title: title,
+                        description: description,
+                        category: category,
+                        imageData: canvas.toDataURL('image/jpeg', 0.6),
+                        uploadDate: new Date().toISOString(),
+                        viewCount: 0
+                    };
+                    
+                    artworks.push(artwork);
+                    
+                    // Clear form
+                    document.getElementById('uploadForm').reset();
+                    document.getElementById('uploadPreview').innerHTML = '';
+                    
+                    // Special message for first artwork
+                    if (isFirstArtwork) {
+                        alertDiv.innerHTML = '<div class="alert alert-success">🎉 First artwork uploaded successfully! Your gallery is now live!</div>';
+                        isFirstArtwork = false;
+                    } else {
+                        alertDiv.innerHTML = '<div class="alert alert-success">Artwork uploaded successfully!</div>';
+                    }
+                    
+                    // Update displays
+                    renderCategoryFilter();
+                    renderGallery();
+                    renderArtworkList();
+                    
+                    addSecurityLog('artwork_uploaded', `Artwork "${title}" uploaded (ID: ${artwork.id})`);
+                    
+                    setTimeout(() => {
+                        alertDiv.innerHTML = '';
+                    }, 3000);
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(fileInput.files[0]);
+        });
+        
+        // Render artwork list for management
+        function renderArtworkList() {
+            const container = document.getElementById('artworkList');
+            
+            if (artworks.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: var(--space-32); background-color: var(--color-surface); border-radius: var(--radius-lg); border: 2px dashed var(--color-border);">
+                        <h3 style="color: var(--color-primary); margin-bottom: var(--space-12);">No artworks yet</h3>
+                        <p style="color: var(--color-text-secondary);">Upload your first artwork using the form above to get started!</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = artworks.map(artwork => `
+                <div class="artwork-item" data-artwork-id="${artwork.id}">
+                    <div class="artwork-item-info">
+                        <h3>${escapeHtml(artwork.title)}</h3>
+                        <p style="color: var(--color-text-secondary); font-size: var(--font-size-sm);">
+                            ${escapeHtml(artwork.category)} | ${new Date(artwork.uploadDate).toLocaleDateString()} | ${artwork.viewCount} views
+                        </p>
+                        <p style="color: var(--color-text-secondary); margin-top: var(--space-8);">${escapeHtml(artwork.description)}</p>
+                    </div>
+                    <div class="artwork-item-actions">
+                        <button class="btn btn-danger" onclick="window.deleteArtwork(${artwork.id})" style="background-color: #ff0000; color: white; font-weight: bold; padding: var(--space-16) var(--space-24); font-size: var(--font-size-lg); min-width: 120px;">DELETE</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // BULLETPROOF DELETE FUNCTION - NO MODALS
+        window.deleteArtwork = function(artworkId) {
+            console.log('=== DELETE CALLED ===');
+            console.log('Artwork ID:', artworkId);
+            console.log('Is Owner Logged In:', isOwnerLoggedIn);
+            console.log('Artworks before:', artworks.length);
+            
+            if (!isOwnerLoggedIn) {
+                showFeedback('Unauthorized action', 'error');
+                return;
+            }
+            
+            // Find the artwork
+            const artwork = artworks.find(a => a.id === artworkId);
+            if (!artwork) {
+                showFeedback('Artwork not found', 'error');
+                console.log('ERROR: Artwork not found');
+                return;
+            }
+            
+            const artworkTitle = artwork.title;
+            console.log('Deleting artwork:', artworkTitle);
+            
+            // STEP 1: Remove artwork from array
+            artworks = artworks.filter(a => a.id !== artworkId);
+            console.log('Artworks after deletion:', artworks.length);
+            
+            // STEP 2: Remove all comments for this artwork
+            const commentCountBefore = comments.length;
+            comments = comments.filter(c => c.artworkId !== artworkId);
+            const commentsRemoved = commentCountBefore - comments.length;
+            console.log('Comments removed:', commentsRemoved);
+            
+            // STEP 3: Close modal if this artwork is open
+            if (currentArtworkId === artworkId) {
+                closeArtworkModal();
+            }
+            
+            // STEP 4: Re-render everything
+            console.log('Re-rendering all views...');
+            renderCategoryFilter();
+            renderGallery();
+            renderArtworkList();
+            renderAllComments();
+            console.log('Re-render complete');
+            
+            // STEP 5: Log the deletion
+            addSecurityLog('artwork_deleted', `Artwork "${artworkTitle}" (ID: ${artworkId}) deleted with ${commentsRemoved} comments`);
+            
+            // STEP 6: Show success message (NO ALERT - DOM UPDATE ONLY)
+            showFeedback(`✓ Artwork "${artworkTitle}" deleted successfully! (${commentsRemoved} comment(s) removed)`, 'success');
+            console.log('=== DELETE COMPLETE ===');
+        }
+        
+        // Render all comments for moderation
+        function renderAllComments() {
+            const container = document.getElementById('commentsList');
+            
+            if (comments.length === 0) {
+                container.innerHTML = '<p style="color: var(--color-text-secondary);">No comments yet.</p>';
+                return;
+            }
+            
+            container.innerHTML = comments.map(comment => {
+                const artwork = artworks.find(a => a.id === comment.artworkId);
+                return `
+                    <div class="comment">
+                        <div class="comment-header">
+                            <div>
+                                <span class="comment-author">${escapeHtml(comment.commenterName)}</span>
+                                <span style="color: var(--color-text-secondary); font-size: var(--font-size-sm); margin-left: var(--space-8);">on "${artwork ? escapeHtml(artwork.title) : 'Unknown'}"</span>
+                            </div>
+                            <div>
+                                <span class="comment-date">${new Date(comment.timestamp).toLocaleString()}</span>
+                                <button class="btn btn-danger btn-small" style="margin-left: var(--space-8);" onclick="deleteCommentFromList(${comment.id})">Delete</button>
+                            </div>
+                        </div>
+                        <p class="comment-text">${escapeHtml(comment.text)}</p>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        // Delete comment from moderation list
+        window.deleteCommentFromList = function(commentId) {
+            if (!isOwnerLoggedIn) return;
+            
+            const index = comments.findIndex(c => c.id === commentId);
+            if (index > -1) {
+                comments.splice(index, 1);
+                renderAllComments();
+                if (currentArtworkId) {
+                    renderComments(currentArtworkId);
+                }
+                addSecurityLog('comment_deleted', `Comment ${commentId} deleted by owner`);
+            }
+        }
+        
+        // Render security logs
+        function renderSecurityLogs() {
+            const container = document.getElementById('securityLogs');
+            
+            if (securityLogs.length === 0) {
+                container.innerHTML = '<p style="color: var(--color-text-secondary);">No security events logged yet.</p>';
+                return;
+            }
+            
+            container.innerHTML = securityLogs.slice().reverse().map(log => `
+                <div class="log-entry">
+                    <strong>[${new Date(log.timestamp).toLocaleString()}]</strong> ${log.event}: ${escapeHtml(log.details)}
+                </div>
+            `).join('');
+        }
+        
+        // Add security log entry
+        function addSecurityLog(event, details) {
+            securityLogs.push({
+                timestamp: new Date().toISOString(),
+                event: event,
+                details: details
+            });
+        }
+        
+        // About section - view or edit based on login status
+        document.getElementById('aboutBtn').addEventListener('click', function() {
+            viewAbout();
+        });
+        
+        window.viewAbout = function() {
+            if (isOwnerLoggedIn) {
+                showEditableAbout();
+            } else {
+                showReadOnlyAbout();
+            }
+        }
+        
+        window.showReadOnlyAbout = function() {
+            const aboutSection = document.getElementById('aboutSection');
+            const galleryGrid = document.getElementById('galleryGrid');
+            const controls = document.querySelector('.controls');
+            
+            aboutSection.innerHTML = `
+                <h2>${escapeHtml(window.aboutContent.title)}</h2>
+                <div style="margin-top: var(--space-24);">
+                    <h3 style="font-size: var(--font-size-xl); margin-bottom: var(--space-12); color: var(--color-primary);">About</h3>
+                    <p style="white-space: pre-wrap;">${escapeHtml(window.aboutContent.bio)}</p>
+                </div>
+                <div style="margin-top: var(--space-24);">
+                    <h3 style="font-size: var(--font-size-xl); margin-bottom: var(--space-12); color: var(--color-primary);">Artist Statement</h3>
+                    <p style="white-space: pre-wrap;">${escapeHtml(window.aboutContent.statement)}</p>
+                </div>
+                <div style="margin-top: var(--space-24);">
+                    <h3 style="font-size: var(--font-size-xl); margin-bottom: var(--space-12); color: var(--color-primary);">Contact</h3>
+                    <p>Email: ${escapeHtml(window.aboutContent.email)}</p>
+                    <p style="margin-top: var(--space-8);">${escapeHtml(window.aboutContent.socialLinks)}</p>
+                </div>
+                <button class="btn btn-secondary" onclick="closeAbout()" style="margin-top: var(--space-24);">Close</button>
+            `;
+            
+            aboutSection.classList.remove('hidden');
+            galleryGrid.style.display = 'none';
+            controls.style.display = 'none';
+            
+            addSecurityLog('about_viewed', 'About page viewed by visitor');
+        }
+        
+        window.showEditableAbout = function() {
+            const aboutSection = document.getElementById('aboutSection');
+            const galleryGrid = document.getElementById('galleryGrid');
+            const controls = document.querySelector('.controls');
+            
+            aboutSection.innerHTML = `
+                <h2 style="color: var(--color-success); margin-bottom: var(--space-8);">Edit About Page</h2>
+                <p style="color: var(--color-text-secondary); margin-bottom: var(--space-24); font-size: var(--font-size-sm);">✏️ Owner Mode - Edit your artist information below</p>
+                
+                <div id="aboutEditAlert" style="margin-bottom: var(--space-16);"></div>
+                
+                <div class="form-group">
+                    <label class="form-label">Title / Artist Name</label>
+                    <input type="text" id="editTitle" class="form-input" value="${escapeHtml(window.aboutContent.title)}">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Bio / Introduction</label>
+                    <textarea id="editBio" class="form-input" rows="6" style="resize: vertical;">${escapeHtml(window.aboutContent.bio)}</textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Artist Statement</label>
+                    <textarea id="editStatement" class="form-input" rows="6" style="resize: vertical;">${escapeHtml(window.aboutContent.statement)}</textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" id="editEmail" class="form-input" value="${escapeHtml(window.aboutContent.email)}">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Social Links</label>
+                    <input type="text" id="editSocial" class="form-input" value="${escapeHtml(window.aboutContent.socialLinks)}">
+                </div>
+                
+                <div style="display: flex; gap: var(--space-12); margin-top: var(--space-24);">
+                    <button class="btn btn-primary" onclick="saveAboutChanges()" style="background-color: var(--color-success); color: var(--color-charcoal-800); font-weight: var(--font-weight-bold);">💾 Save Changes</button>
+                    <button class="btn btn-secondary" onclick="closeAbout()">Cancel</button>
+                </div>
+            `;
+            
+            aboutSection.classList.remove('hidden');
+            galleryGrid.style.display = 'none';
+            controls.style.display = 'none';
+            
+            addSecurityLog('about_edit_opened', 'Owner opened About page for editing');
+        }
+        
+        window.saveAboutChanges = function() {
+            if (!isOwnerLoggedIn) {
+                showFeedback('Unauthorized action', 'error');
+                return;
+            }
+            
+            // Get values from form
+            window.aboutContent.title = document.getElementById('editTitle').value.trim();
+            window.aboutContent.bio = document.getElementById('editBio').value.trim();
+            window.aboutContent.statement = document.getElementById('editStatement').value.trim();
+            window.aboutContent.email = document.getElementById('editEmail').value.trim();
+            window.aboutContent.socialLinks = document.getElementById('editSocial').value.trim();
+            
+            // Show success message
+            const alertDiv = document.getElementById('aboutEditAlert');
+            alertDiv.innerHTML = '<div class="alert alert-success">✓ About page updated successfully!</div>';
+            
+            // Log the change
+            addSecurityLog('about_updated', 'Owner updated About page content');
+            
+            // Close after a moment
+            setTimeout(function() {
+                closeAbout();
+            }, 1500);
+        }
+        
+        window.closeAbout = function() {
+            const aboutSection = document.getElementById('aboutSection');
+            const galleryGrid = document.getElementById('galleryGrid');
+            const controls = document.querySelector('.controls');
+            
+            aboutSection.classList.add('hidden');
+            galleryGrid.style.display = 'grid';
+            controls.style.display = 'flex';
+        }
+        
+        // Search and filter
+        document.getElementById('searchBox').addEventListener('input', renderGallery);
+        document.getElementById('categoryFilter').addEventListener('change', renderGallery);
+        
+        // Show feedback message without modals
+        function showFeedback(message, type) {
+            // Create or get feedback container
+            let feedbackDiv = document.getElementById('globalFeedback');
+            if (!feedbackDiv) {
+                feedbackDiv = document.createElement('div');
+                feedbackDiv.id = 'globalFeedback';
+                feedbackDiv.style.cssText = `
+                    position: fixed;
+                    top: 80px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    padding: 16px 24px;
+                    border-radius: 8px;
+                    font-weight: 500;
+                    font-size: 16px;
+                    z-index: 10000;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+                    animation: slideDown 0.3s ease;
+                    max-width: 90%;
+                    text-align: center;
+                `;
+                document.body.appendChild(feedbackDiv);
+            }
+            
+            // Set message and style based on type
+            feedbackDiv.textContent = message;
+            if (type === 'success') {
+                feedbackDiv.style.backgroundColor = 'var(--color-success)';
+                feedbackDiv.style.color = 'var(--color-charcoal-800)';
+                feedbackDiv.style.border = '2px solid var(--color-success)';
+            } else if (type === 'error') {
+                feedbackDiv.style.backgroundColor = 'var(--color-error)';
+                feedbackDiv.style.color = 'white';
+                feedbackDiv.style.border = '2px solid var(--color-error)';
+            }
+            
+            // Show feedback
+            feedbackDiv.style.display = 'block';
+            
+            // Hide after 3 seconds
+            setTimeout(function() {
+                feedbackDiv.style.display = 'none';
+            }, 3000);
+        }
+        
+        // Escape HTML to prevent XSS
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // Disable right-click on images
+        document.addEventListener('contextmenu', function(e) {
+            if (e.target.tagName === 'CANVAS' || e.target.closest('.gallery-item') || e.target.closest('.modal-image-container')) {
+                e.preventDefault();
+                addSecurityLog('right_click_blocked', 'Right-click attempt blocked on artwork');
+                return false;
+            }
+        });
+        
+        // Disable drag on images
+        document.addEventListener('dragstart', function(e) {
+            if (e.target.tagName === 'CANVAS' || e.target.closest('.gallery-item')) {
+                e.preventDefault();
+                return false;
+            }
+        });
+        
+        // Disable keyboard shortcuts for saving
+        document.addEventListener('keydown', function(e) {
+            // Handle Escape key for modal closing (already handled above)
+            if (e.key === 'Escape') {
+                return; // Let the other handler deal with it
+            }
+            
+            if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'p')) {
+                if (document.getElementById('artworkModal').classList.contains('active')) {
+                    e.preventDefault();
+                    addSecurityLog('save_attempt_blocked', 'Keyboard save/print attempt blocked');
+                    return false;
+                }
+            }
+        });
+        
+        // Initialize app
+        function init() {
+            initializeEmptyGallery();
+            renderCategoryFilter();
+            renderGallery();
+            addSecurityLog('system', 'Fertig\'s Art Exhibit - Gallery ready for launch');
+        }
+        
+        // Start the app
+        init();
+    </script>
+</body>
+</html>
